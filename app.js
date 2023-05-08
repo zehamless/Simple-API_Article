@@ -13,15 +13,25 @@ app.use(express.static("public"));
 res = app.get;
 
 const uri = 'mongodb://localhost:27017/wiki';
-mongoose.connect(uri);
+mongoose.connect(uri, {userNewUrlParser: true});
 
-const article = {
+const articleSchema = {
     title: String,
     text: String,
 };
 
-const articleModel = mongoose.model('wiki', article);
+const Articles = mongoose.model('wiki', articleSchema);
 
+app.get("/article", function(req, res) {
+    Articles.findOne({})
+    .then(function(found) {
+        console.log(found);
+    }
+    .catch(function(err) {
+        console.log(err);
+        handleError(err);
+    }));
+});
 
 app.listen(3000,function(){
     console.log("Service listening");
