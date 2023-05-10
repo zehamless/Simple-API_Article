@@ -13,7 +13,7 @@ app.use(express.static("public"));
 res = app.get;
 
 const uri = 'mongodb://localhost:27017/wiki';
-mongoose.connect(uri, {userNewUrlParser: true});
+mongoose.connect(uri);
 
 const articleSchema = {
     title: String,
@@ -26,11 +26,26 @@ app.get("/article", function(req, res) {
     Articles.findOne({})
     .then(function(found) {
         console.log(found);
-    }
+        res.send(found);
+    })
     .catch(function(err) {
         console.log(err);
         handleError(err);
-    }));
+    });
+});
+
+app.post('/article', function(req, res) {
+    const post = {
+        title: req.body.title,
+        text: req.body.text,
+    }
+    newPost = new Articles(post)
+    newPost.save().then(function(result){
+        console.log("Added"+ result);
+    })
+    .catch(function(err){
+        console.log(err);
+    });
 });
 
 app.listen(3000,function(){
