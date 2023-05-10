@@ -42,9 +42,11 @@ app.post('/article', function(req, res) {
     newPost = new Articles(post)
     newPost.save().then(function(result){
         console.log("Added"+ result);
+        res.send("Success");
     })
     .catch(function(err){
         console.log(err);
+        res.send(err.message);
     });
 });
 
