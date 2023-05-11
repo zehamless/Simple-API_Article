@@ -32,7 +32,6 @@ app
       })
       .catch(function (err) {
         console.log(err);
-        handleError(err);
       });
   })
   .post(function (req, res) {
@@ -40,7 +39,7 @@ app
       title: req.body.title,
       text: req.body.text,
     };
-    newPost = new Articles(post);
+    const newPost = new Articles(post);
     newPost
       .save()
       .then(function (result) {
@@ -62,8 +61,9 @@ app
       });
   });
 
-app.route('/article/:articleId')
-  .get(function(req, res){
+app
+  .route("/article/:articleId")
+  .get(function (req, res) {
     const articleId = req.params.articleId;
     Articles.findById(articleId)
       .then(function (item) {
@@ -75,15 +75,50 @@ app.route('/article/:articleId')
         res.send("Article not found");
       });
   })
-  .put(function(req, res){
+  .put(function (req, res) {
     const articleId = req.params.articleId;
     const updated = {
-      title: req.body.title;
-      text: req.body.text;
-    }
-    Articles.findByIdAndUpdate()
+      title: req.body.title,
+      text: req.body.text,
+    };
+    Articles.findByIdAndUpdate(articleId, updated)
+      .then(function (article) {
+        console.log(article);
+        res.send("Success");
+      })
+      .catch(function (err) {
+        console.log(err);
+        res.send("Error, " + err);
+      });
   })
-
+  .patch(function (req, res) {
+    const articleId = req.params.articleId;
+    const updated = {
+      title: req.body.title,
+      text: req.body.text,
+    };
+    Articles.findByIdAndUpdate(articleId, updated)
+      .then(function (article) {
+        console.log(article);
+        res.send("Success");
+      })
+      .catch(function (err) {
+        console.log(err);
+        res.send("Error, " + err);
+      });
+  })
+  .delete(function (req, res) {
+    const articleId = req.params.articleId;
+    Articles.findByIdAndDelete(articleId)
+      .then(function (article) {
+        console.log("Success");
+        res.send("Success");
+      })
+      .catch(function (err) {
+        console.log(err);
+        res.send("Error, " + err);
+      });
+  });
 
 app.delete("/article");
 app.listen(3000, function () {
