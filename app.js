@@ -81,7 +81,7 @@ app
       title: req.body.title,
       text: req.body.text,
     };
-    Articles.findByIdAndUpdate(articleId, updated)
+    Articles.findByIdAndUpdate(articleId, updated, {overwrite: true})
       .then(function (article) {
         console.log(article);
         res.send("Success");
