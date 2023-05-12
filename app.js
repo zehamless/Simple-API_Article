@@ -93,11 +93,8 @@ app
   })
   .patch(function (req, res) {
     const articleId = req.params.articleId;
-    const updated = {
-      title: req.body.title,
-      text: req.body.text,
-    };
-    Articles.findByIdAndUpdate(articleId, updated)
+
+    Articles.findByIdAndUpdate(articleId, {$set: req.body})
       .then(function (article) {
         console.log(article);
         res.send("Success");
